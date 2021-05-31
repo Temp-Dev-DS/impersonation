@@ -1,271 +1,80 @@
-<!doctype html>
-<html lang="ja">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends "layout.html" %} {% block content %}
+<div class="contents" style="padding-top: 20pt">
+  <h1 style="color: white; padding-left: 3%">ものまね</h1>
+</div>
 
-    <!-- Bootstrap CSSの読み込み -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="/static/css/sample.css">
+<h5 style="padding-left: 3%; color: white; padding-top: 5%">サンプルを確認</h5>
 
-    <title>Miyaooo.com</title>
-  </head>
-  <body>
-    <!-- ここから内容 -->
-    
+<div class="dropdown" style="text-align: center; padding-top: 1%">
+  <button
+    type="button"
+    class="btn btn-light dropdown-toggle"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    項目を選択してください
+  </button>
+  <ul class="dropdown-menu">
+    <li><button class="dropdown-item" value="驚く声">驚く声</button></li>
+    <li><button class="dropdown-item" value="予備1">予備1</button></li>
+    <li><button class="dropdown-item" value="予備2">予備2</button></li>
+  </ul>
+</div>
 
+<div class="audio" style="padding-top: 3%; text-align: center">
+  <audio controls src="/static/sound/驚き_1.mp3">
+    Your browser does not support the
+    <code>audio</code> element.
+  </audio>
+</div>
 
-    <!-- ヘッダー -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">CI/CD勉強会</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
-          </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-    </nav>
+<h5 style="padding-left: 3%; color: white; padding-top: 5%">録音してみよう</h5>
 
-    
+<p style="text-align: center; padding-top: 2%; color: white">
+  ※ 録音後、音声ファイル(WAVファイル)がダウンロードできます。
+</p>
 
+<div class="text-center" , style="padding-top: 2%">
+  <button
+    class="btn btn-primary"
+    onclick="startRecording(this);"
+    style="width: 20%"
+  >
+    録音
+  </button>
+  <button
+    class="btn btn-primary"
+    onclick="stopRecording(this);"
+    style="width: 20%"
+    disabled="disabled"
+  >
+    停止
+  </button>
+</div>
 
+<div class="text-center">
+  <p style="padding-left: 3%; color: white; padding-top: 5%">
+    録音ファイルは以下に表示されます。
+  </p>
+  <ul id="recordingslist" style="color: white"></ul>
+</div>
 
-    <div class="contents" style="padding-top: 20pt;">
-        <h1 style="color: white; padding-left: 3%;">ものまね</h1>
-    </div>
+<p style="padding-left: 3%; color: white; display: none">ステータス</p>
+<pre id="log" style="display: none"></pre>
 
+<div class="text-center" , style="padding-top: 5%">
+  <a
+    class="btn btn-danger"
+    style="width: 20%"
+    href="monomane_result"
+    role="button"
+    >結果を確認する</a
+  >
+</div>
 
-    
+<div class="text-center" , style="padding-top: 1%">
+  <a class="btn btn-primary" style="width: 20%" href="/" role="button">戻る</a>
+</div>
 
-    <h5 style="padding-left: 3%; color: white; padding-top: 5%;">サンプルを確認</h5>
-	
-
-        
-    <div class="dropdown" style="text-align: center; padding-top: 1%;">
-        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">項目を選択してください</button>
-        <ul class="dropdown-menu">
-            <li><button class="dropdown-item" value="驚く声">驚く声</button></li>
-            <li><button class="dropdown-item" value="予備1">予備1</button></li>
-            <li><button class="dropdown-item" value="予備2">予備2</button></li>
-        </ul>
-    </div>
-
-    
-   
-     
-    
-    
-
-
-    <div class="audio" style="padding-top: 3%; text-align: center;">
-        <audio controls src="/static/sound/驚き_1.mp3">
-            Your browser does not support the
-            <code>audio</code> element.
-        </audio>
-    </div>
-    
-    <h5 style="padding-left: 3%; color: white; padding-top: 5%;">録音してみよう</h5>
-    
-    <p style="text-align: center; padding-top: 2%; color: white;">※ 録音後、音声ファイル(WAVファイル)がダウンロードできます。</p>
-	
-    <div class="text-center", style="padding-top: 2%;">
-        <button class="btn btn-primary" onclick="startRecording(this);" style="width: 20%;">録音</button>
-        <button class="btn btn-primary" onclick="stopRecording(this);" style="width: 20%;" disabled="disabled">停止</button>
-	</div>
-
-
-    <div class="text-center">
-	    <p style="padding-left: 3%; color: white; padding-top: 5%;">録音ファイルは以下に表示されます。</p>
-	    <ul id="recordingslist" style="color: white;"></ul>
-    </div>
-	
-	<p style="padding-left: 3%; color: white; display: none;">ステータス</p>
-	<pre id="log" style="display: none;">
-    </pre>
-
-
-
-
-    
-    <div class="text-center", style="padding-top: 5%;">
-        <a class="btn btn-danger" style="width: 20%;" href="monomane_result" role="button">結果を確認する</a>
-    </div>
-
-    <div class="text-center", style="padding-top: 1%;">
-        <a class="btn btn-primary" style="width: 20%;" href="/" role="button">戻る</a>
-    </div>
-
-
-    <!-- フッター -->
-    <div class="container-fluid pb-0 mb-0 justify-content-center text-light ">
-        <footer>
-            <div class="row my-5 justify-content-center py-5">
-                <div class="col-11">
-                    <div class="row ">
-                        <div class="col-xl-8 col-md-4 col-sm-4 col-12 my-auto mx-auto a">
-                            <h3 class="text-muted mb-md-0 mb-5 bold-text">CI/CD Learnings.</h3>
-                        </div>
-                        <div class="col-xl-2 col-md-4 col-sm-4 col-12">
-                            <h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
-                            <ul class="list-unstyled">
-                                <li>Home</li>
-                                <li>About</li>
-                                <li>Blog</li>
-                                <li>Portfolio</li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-2 col-md-4 col-sm-4 col-12">
-                            <h6 class="mb-3 mb-lg-4 text-muted bold-text mt-sm-0 mt-5"><b>ADDRESS</b></h6>
-                            <p class="mb-1">にほんのどこか</p>
-                            <p>4人がちょうど入る部屋</p>
-                        </div>
-                    </div>
-                    <div class="row ">
-                        <div class="col-xl-8 col-md-4 col-sm-4 col-auto my-md-0 mt-5 order-sm-1 order-3 align-self-end">
-                            <p class="social text-muted mb-0 pb-0 bold-text"> <span class="mx-2"><i class="fa fa-facebook" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-linkedin-square" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-twitter" aria-hidden="true"></i></span> <span class="mx-2"><i class="fa fa-instagram" aria-hidden="true"></i></span> </p><small class="rights"><span>&#174;</span>  All Rights Reserved.</small>
-                        </div>
-                        <div class="col-xl-2 col-md-4 col-sm-4 col-auto order-1 align-self-end ">
-                            <h6 class="mt-55 mt-2 text-muted bold-text"><b>HISAYA MIYAO</b></h6><small> <span><i class="fa fa-envelope" aria-hidden="true"></i></span> miyaooo.com@gmail.com</small>
-                        </div>
-                        <!--
-                        <div class="col-xl-2 col-md-4 col-sm-4 col-auto order-2 align-self-end mt-3 ">
-                            <h6 class="text-muted bold-text"><b>RISHABH SHEKHAR</b></h6><small><span><i class="fa fa-envelope" aria-hidden="true"></i></span> rishab@gmail.com</small>
-                        </div>
-                        -->
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, Popper.js, Bootstrap JSの順番に読み込む -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js" type="text/javascript"></script>
-       
-
-    <script>
-        $(function(){
-            $('.dropdown-menu .dropdown-item').click(function(){
-                var visibleItem = $('.dropdown-toggle', $(this).closest('.dropdown'));
-                visibleItem.text($(this).attr('value'));
-            });
-        });
-
-
-        function __log(e, data) {
-		    log.innerHTML += e + " " + (data || '') + '\n';
-	    }
-
-        var audio_context;
-        var recorder;
-
-        function startUserMedia(stream)
-        {
-            var input = audio_context.createMediaStreamSource(stream);
-            __log('Media stream created.');
-            
-            recorder = new Recorder(input);
-            __log('Recorder initialised.');
-        }
-
-        function startRecording(button)
-        {
-            recorder && recorder.record();
-            button.disabled = true;
-            button.nextElementSibling.disabled = false;
-            __log('Recording...');
-        }
-
-        function stopRecording(button)
-        {
-            recorder && recorder.stop();
-            button.disabled = true;
-            button.previousElementSibling.disabled = false;
-            __log('Stopped recording.');
-            
-            createDownloadLink();
-            recorder.clear();
-        }
-
-        function createDownloadLink()
-        {
-            recorder && recorder.exportWAV(function(blob) {
-                var url = URL.createObjectURL(blob);
-                var li = document.createElement('li');
-                var au = document.createElement('audio');
-                var hf = document.createElement('a');
-                
-                au.controls = true;
-                au.src = url;
-                hf.href = url;
-                hf.download = new Date().toISOString() + '.wav';
-                hf.style = "color: yellow;"
-                hf.innerHTML = hf.download;
-                li.appendChild(au);
-                li.appendChild(hf);
-                recordingslist.appendChild(li);
-            });
-        }
-
-        window.onload = function init()
-        {
-            try
-            {
-                window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-                window.URL = window.URL || window.webkitURL;
-                
-                audio_context = new AudioContext;
-                __log('Audio context set up.');
-                __log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
-            }
-            catch (e)
-            {
-                alert('No web audio support in this browser!');
-            }
-            
-            navigator.getUserMedia({audio: true}, startUserMedia, function(e) {
-                __log('No live audio input: ' + e);
-            });
-        };
-
-
-    </script>
-    <script src="/static/js/recorder.js"></script>
-
-</body>
-</html>
+{% endblock %}
