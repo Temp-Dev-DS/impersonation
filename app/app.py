@@ -4,6 +4,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return render_template('index.html')
+    # return render_template('hello.html', tite="flask test", name=name)
 
 @app.route('/monomane')
 def monomane():
@@ -17,21 +18,4 @@ def monomane_result():
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)
-    # app.run(debug=False, host='0.0.0.0', port=80)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
