@@ -3,20 +3,23 @@
   <h1 style="color: white; padding-left: 3%">採点結果</h1>
 
   <ul class="list-group" style="width: 30%; padding-left: 3%">
-    <li class="list-group-item list-group-item-success">
+    <li class="list-group-item list-group-item-success" id="result-ontei">
       音程はいい感じです！
     </li>
-    <li class="list-group-item list-group-item-success">
+    <li class="list-group-item list-group-item-success" id="result-yokuyou">
       抑揚はいい感じです！
     </li>
-    <li class="list-group-item list-group-item-danger">
+    <li class="list-group-item list-group-item-danger" id="result-rhythm">
       リズムが壊滅的です...
     </li>
   </ul>
 
   <canvas id="rader_result" style="width: 30%"></canvas>
 
-  <h1 style="color: white; text-align: right; padding-right: 3%">
+  <h1
+    style="color: white; text-align: right; padding-right: 3%"
+    id="score_area"
+  >
     72点 / 100点
   </h1>
 
@@ -67,6 +70,24 @@
 ></script>
 
 <script type="text/javascript">
+  // 生成したい数字を日付に紐づけて適当に生成 → scoreはjsではなくpython側で処理した結果を表示する仕組みにそのうち変更する
+  var today = new Date();
+  var a = today.getDate() % 10;
+  var b = today.getDay() % 10;
+  var c = today.getHours() % 10;
+  var d = today.getMinutes() % 10;
+  var e = today.getSeconds() % 10;
+  var scores = [a, b, c, d, e];
+  // jsの配列にデフォルトでsum()がないっぽいので一旦これで保留
+
+  // リザルトに応じて結果の書き換え
+  var result = (a + b + c + d + e) * 2;
+  document.getElementById("score_area").innerHTML = result + " 点 / 100点";
+  // <li>タグないの書き換え+表示の色を変更したいのでclass情報も書き換える処理を追加する
+  // document.getElementById("result-ontei").innerHTML = "onteiはいい感じです！"
+  // document.getElementById("result-yokuyou").innerHTML = "yokuyouはいい感じです！"
+  // document.getElementById("result-rhythm").innerHTML = "rhythmはいい感じです！"
+
   // Chart に入れる data 変数に、必要なデータをセット
   var data = {
     labels: ["音程", "ピッチ", "抑揚", "リズム", "こぶし"], //数値の項目を指定
@@ -81,7 +102,8 @@
         pointBorderColor: "#fff", //データ１のポインターの線の色
         pointHoverBackgroundColor: "#fff", //データ１のポインターhover時の背景色
         pointHoverBorderColor: "rgba(179,181,198,1)", //データ１のポインターhover時の線の色
-        data: ["8", "5", "7", "3", "6"], //lavelsの順番に合わせたデータ
+        // data: ["8", "5", "7", "3", "6"], //lavelsの順番に合わせたデータ
+        data: scores, //lavelsの順番に合わせたデータ
       },
       // {　//ここから下はデータ２
       //     label: "大宮アルディージャ",
