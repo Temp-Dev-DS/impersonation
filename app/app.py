@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from glob import glob
 app = Flask(__name__)
 
 @app.route('/')
@@ -8,7 +9,10 @@ def index():
 
 @app.route('/monomane')
 def monomane():
-    return render_template('monomane.html')
+    sound_list = glob('static/sound/*')
+    sound_list = [i.split('/')[-1].replace('.mp3', '') for i in sound_list]
+    print('sound_list:\n', sound_list)
+    return render_template('monomane.html', sound_list=sound_list)
 
 
 @app.route('/monomane_result')
