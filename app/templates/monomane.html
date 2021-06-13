@@ -5,7 +5,7 @@
 
 <h5 style="padding-left: 3%; color: white; padding-top: 5%">サンプルを確認</h5>
 
-<div class="dropdown" style="text-align: center; padding-top: 1%">
+<div class="dropdown" id="select-sound" style="text-align: center; padding-top: 1%">
   <button
     type="button"
     class="btn btn-light dropdown-toggle"
@@ -16,14 +16,14 @@
     項目を選択してください
   </button>
   <ul class="dropdown-menu">
-    <li><button class="dropdown-item" value="驚く声">驚く声</button></li>
-    <li><button class="dropdown-item" value="予備1">予備1</button></li>
-    <li><button class="dropdown-item" value="予備2">予備2</button></li>
+    {% for i in sound_list %}
+    <li><button class="dropdown-item" value={{ i }} onclick="selectedSound(value)">{{ i }}</button></li>
+    {% endfor %}
   </ul>
 </div>
 
 <div class="audio" style="padding-top: 3%; text-align: center">
-  <audio controls src="/static/sound/驚き_1.mp3">
+  <audio id='audio-file' controls src="", style="visibility: hidden;">
     Your browser does not support the
     <code>audio</code> element.
   </audio>
@@ -180,5 +180,15 @@
   };
 </script>
 <script src="/static/js/recorder.js"></script>
+
+<script>
+  function selectedSound(value){
+    let soundFileName = '/static/sound/' + value + '.mp3';
+    let soundPart = document.getElementById('audio-file');
+    console.log(soundPart);
+    soundPart.setAttribute('src', soundFileName);
+    soundPart.style.visibility = 'visible'
+}
+</script>
 
 {% endblock %}
