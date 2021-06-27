@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from glob import glob
 app = Flask(__name__)
 
@@ -15,8 +15,10 @@ def monomane():
     return render_template('monomane.html', sound_list=sound_list)
 
 
-@app.route('/monomane_result')
+@app.route('/monomane_result', methods=['POST'])
 def monomane_result():
+    data = request.form['audio']
+    print('data:\n', data)
     return render_template('result.html')
 
 

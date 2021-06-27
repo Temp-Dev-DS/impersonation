@@ -64,12 +64,13 @@
 <pre id="log" style="display: none"></pre>
 
 <div class="text-center" , style="padding-top: 5%">
-  <a
+  <button
     class="btn btn-danger"
     style="width: 20%"
     href="monomane_result"
     role="button"
-    >結果を確認する</a
+    onclick=sendAudio()
+    >結果を確認する</button
   >
 </div>
 
@@ -188,7 +189,34 @@
     console.log(soundPart);
     soundPart.setAttribute('src', soundFileName);
     soundPart.style.visibility = 'visible'
-}
+  }
+
+
+
+
+  function sendAudio() {
+    // フォームの生成
+    var form = document.createElement("form");
+    form.setAttribute("action", '/monomane_result');
+    form.setAttribute("method", "post");
+    form.style.display = "none";
+    document.body.appendChild(form);
+
+    var data = {'audio':'これはサンプル音源です。'};
+
+    // パラメタの設定
+    if (data !== undefined) {
+      for (var paramName in data) {
+        var input = document.createElement('input');
+        input.setAttribute('type', 'hidden');
+        input.setAttribute('name', paramName);
+        input.setAttribute('value', data[paramName]);
+        form.appendChild(input);
+      }
+    }
+    // submit
+    form.submit();
+  }
 </script>
 
 {% endblock %}
