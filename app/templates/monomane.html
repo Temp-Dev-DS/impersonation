@@ -202,20 +202,70 @@
     form.style.display = "none";
     document.body.appendChild(form);
 
-    var data = {'audio':'これはサンプル音源です。'};
 
-    // パラメタの設定
-    if (data !== undefined) {
-      for (var paramName in data) {
-        var input = document.createElement('input');
-        input.setAttribute('type', 'hidden');
-        input.setAttribute('name', paramName);
-        input.setAttribute('value', data[paramName]);
-        form.appendChild(input);
+    var audioBlobUrl = document.getElementById('recordingslist').getElementsByTagName('li')[0].getElementsByTagName('a')[0];
+    console.log(audioBlobUrl);
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', audioBlobUrl, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      var audioBlob = this.response;
+      console.log(audioBlob);
+
+
+      var reader = new FileReader();
+			reader.readAsDataURL(audioBlob);
+      // reader.readAsBinaryString(audioBlob);
+      // reader.readAsArrayBuffer(audioBlob);
+      // reader.readAsText(audioBlob);
+
+		
+			// Blob読込後のイベント
+			reader.onload = function(evt) {
+
+        console.log(reader);
+
+      // const formData = new FormData();
+      // formData.append('audio', audioBlob);
+
+
+        var data = {'audio':reader.result};
+        console.log(data);
+
+        // パラメタの設定
+        if (data !== undefined) {
+          for (var paramName in data) {
+            var input = document.createElement('input');
+            input.setAttribute('type', 'hidden');
+            input.setAttribute('name', paramName);
+            input.setAttribute('value', data[paramName]);
+            form.appendChild(input);
+          }
+        }
+
+        
+
+        // submit
+        form.submit();
       }
-    }
-    // submit
-    form.submit();
+      return 1;
+
+      
+
+
+    };
+    xhr.send();
+
+
+
+    
+
+    
+
+
+    
   }
 </script>
 

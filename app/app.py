@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from glob import glob
+import base64
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -17,8 +19,12 @@ def monomane():
 
 @app.route('/monomane_result', methods=['POST'])
 def monomane_result():
-    data = request.form['audio']
+    data = request.form['audio'].replace('data:audio/wav;base64,', '')
     print('data:\n', data)
+
+    with open('static/sound/sample.wav', "wb") as f:
+        f.write(base64.b64decode(data))
+
     return render_template('result.html')
 
 
