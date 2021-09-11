@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class FeatureExtractor():
     ''' 特徴量(FBANK, MFCC)を抽出するクラス
     sample_frequency: 入力波形のサンプリング周波数 [Hz]

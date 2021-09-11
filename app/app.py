@@ -28,7 +28,7 @@ def monomane_result():
     data = request.form['audio'].replace('data:audio/wav;base64,', '')
     # print('data:\n', data)
 
-    wav_path='static/sound/sample.wav'
+    wav_path='static/tmp/sample.wav'
     try:
         with open(wav_path, "wb") as f:
             f.write(base64.b64decode(data))
@@ -45,7 +45,7 @@ def monomane_result():
     low_frequency = 20
     # 高周波数帯域除去のカットオフ周波数 [Hz]
     high_frequency = sample_frequency / 2
-    # メルフィルタバンクの数
+    # メルフィルタバンクの数S
     num_mel_bins = 23
     # MFCCの次元数
     num_ceps = 13
@@ -64,22 +64,25 @@ def monomane_result():
     )
 
     try:        
-        # wavファイルを読み込み，特徴量を計算する
+        # wavファイルを読み込み
         with wave.open(wav_path) as wav:
             # サンプリング周波数のチェック
-            if wav.getframerate() != sample_frequency:
-                sys.stderr.write('The expected \
-                    sampling rate is 16000.\n')
-                print(wav.getframerate())
-                exit(1)
-            # wavファイルが1チャネル(モノラル)
-            # データであることをチェック
-            # if wav.getnchannels() != 1:
-            #     print(wav.getnchannels())
-            #     sys.stderr.write('This program \
-            #         supports monaural wav file only.\n')
+            # if wav.getframerate() != sample_frequency:
+            #     sys.stderr.write('The expected \
+            #         sampling rate is 16000.\n')
+            #     print(wav.getframerate())
             #     exit(1)
-            
+            # wavファイルが1チャネル(モノラル)データであることをチェック
+            if wav.getnchannels() != 1:
+                print(wav.getnchannels())
+                sys.stderr.write('This program \
+                    supports monaural wav file only.\n')
+                sound = AudioSegment.from_wav(wav_path)
+                sound = sound.set_channels(1)   
+                sound.export(wav_path, format="wav")
+                print("converet to monoral from stereo")
+        # 特徴量を計算する
+        with wave.open(wav_path) as wav:    
             # wavデータのサンプル数
             num_samples = wav.getnframes()
 
