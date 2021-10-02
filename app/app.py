@@ -6,9 +6,49 @@ import sys,os
 import numpy as np
 from feature_engineer import FeatureExtractor
 from pydub import AudioSegment
+import sqlalchemy
 
 
 app = Flask(__name__)
+
+# db_config = {
+#     'pool_size': 5,
+#     'max_overflow': 2,
+#     'pool_timeout': 30,
+#     'pool_recycle': 1800
+# }
+
+# Remember - storing secrets in plaintext is potentially unsafe. Consider using
+# something like https://cloud.google.com/secret-manager/docs/overview to help keep
+# secrets secret.
+db_user = os.environ.get("DB_USER", "root")
+db_pass = os.environ.get("DB_PASS", "root")
+db_name = os.environ.get("DB_NAME", "db_monomane")
+db_socket_dir = os.environ.get("DB_SOCKET_DIR", "/cloudsql")
+cloud_sql_connection_name = os.environ.get("CLOUD_SQL_CONNECTION_NAME", "cloudrun-test0822:asia-northeast1:ci-cd-monomane")
+
+db = sqlalchemy.create_engine(
+    # Equivalent URL:
+    # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=<socket_path>/<cloud_sql_instance_name>
+    sqlalchemy.engine.url.URL( # .create(
+        drivername="mysql+pymysql",
+        username=db_user,  # e.g. "my-database-user"
+        password=db_pass,  # e.g. "my-database-password"
+        database=db_name,  # e.g. "my-database-name"
+        query={
+            "unix_socket": "{}/{}".format(
+                db_socket_dir,  # e.g. "/cloudsql"
+                cloud_sql_connection_name)  # i.e "<PROJECT-NAME>:<INSTANCE-REGION>:<INSTANCE-NAME>"
+        }
+    ),
+    # **db_config
+    pool_size=5,
+    max_overflow=2,
+    pool_timeout=30,
+    pool_recycle=1800
+)
+
+
 
 @app.route('/')
 def index():
@@ -118,11 +158,16 @@ def monomane_result():
         print("特徴量抽出失敗")
     ###距離計算
 
-
+    sql = sqlalchemy.text("INSERT INTO monomanes (monomane_data) values ('another try');")
+    try:
+        with db.connect() as conn:
+            conn.execute(sql)
+    except Exception as e:
+        return 'Error: {}'.format(str(e))
 
     return render_template('result.html')
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))
 

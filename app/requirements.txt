@@ -2,3 +2,7 @@ flask
 numpy
 pandas
 pydub
+SQLAlchemy==1.3.12
+gunicorn==20.1.0
+
+PyMySQL==0.9.3
